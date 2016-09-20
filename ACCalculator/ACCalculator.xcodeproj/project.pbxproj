@@ -12,6 +12,7 @@
 		81E5DD2C1D908AED00EB08B3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81E5DD2A1D908AED00EB08B3 /* Main.storyboard */; };
 		81E5DD2E1D908AEE00EB08B3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 81E5DD2D1D908AEE00EB08B3 /* Assets.xcassets */; };
 		81E5DD311D908AEE00EB08B3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81E5DD2F1D908AEE00EB08B3 /* LaunchScreen.storyboard */; };
+		81E5DD391D90A04C00EB08B3 /* EfficiencyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E5DD381D90A04C00EB08B3 /* EfficiencyModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		81E5DD2D1D908AEE00EB08B3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		81E5DD301D908AEE00EB08B3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		81E5DD321D908AEE00EB08B3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		81E5DD381D90A04C00EB08B3 /* EfficiencyModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EfficiencyModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +59,7 @@
 				81E5DD261D908AED00EB08B3 /* AppDelegate.swift */,
 				81E5DD281D908AED00EB08B3 /* ViewController.swift */,
 				81E5DD2A1D908AED00EB08B3 /* Main.storyboard */,
+				81E5DD381D90A04C00EB08B3 /* EfficiencyModel.swift */,
 				81E5DD2D1D908AEE00EB08B3 /* Assets.xcassets */,
 				81E5DD2F1D908AEE00EB08B3 /* LaunchScreen.storyboard */,
 				81E5DD321D908AEE00EB08B3 /* Info.plist */,
@@ -136,6 +139,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81E5DD391D90A04C00EB08B3 /* EfficiencyModel.swift in Sources */,
 				81E5DD291D908AED00EB08B3 /* ViewController.swift in Sources */,
 				81E5DD271D908AED00EB08B3 /* AppDelegate.swift in Sources */,
 			);
