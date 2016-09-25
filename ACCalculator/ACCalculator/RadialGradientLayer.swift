@@ -11,22 +11,25 @@ import UIKit
 
 class RadialGradientLayer: CALayer {
     
-    init(innerColor: UIColor, outerColor: UIColor) {
-        self.innerColor = innerColor.cgColor
-        self.outerColor = outerColor.cgColor
-        
+    override init() {
         super.init()
-        
         needsDisplayOnBoundsChange = true
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("This class does not support NSCoding")
+    init(center: CGPoint, radius: CGFloat, colors: [CGColor]) {
+        self.center = center
+        self.radius = radius
+        self.colors = colors
+        
+        super.init()    }
+    
+    required init(coder aDecoder: NSCoder) {
+         super.init()
     }
     
-    var innerColor: CGColor
-    var outerColor: CGColor
-    
+    var center:CGPoint = CGPoint(x: 50, y: 50)
+    var radius:CGFloat = 20
+    var colors:[CGColor] = [UIColor(red: 251/255, green: 237/255, blue: 33/255, alpha: 1.0).cgColor , UIColor(red: 251/255, green: 179/255, blue: 108/255, alpha: 1.0).cgColor]
     
     
     override func draw(in ctx: CGContext) {
@@ -34,18 +37,20 @@ class RadialGradientLayer: CALayer {
         
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         
-        let locations:[CGFloat] = [0.0, 1.0]
-        let colors = [innerColor, outerColor]
+        let locations: [CGFloat] = [0.0, 1.0]
+        
+        
+        
+        
         
 
         
        let gradient = CGGradient(colorsSpace: colorSpace, colors: colors as CFArray, locations: locations)
         
-        let center = CGPoint(x: bounds.width / 2.0, y: bounds.height / 2.0)
-        let radius = min(bounds.width / 2.0, bounds.height / 2.0)
         
         
-        ctx.drawRadialGradient(gradient!, startCenter: center, startRadius: radius, endCenter: center, endRadius: radius, options: .drawsAfterEndLocation)
+        
+        ctx.drawRadialGradient(gradient!, startCenter: center, startRadius: 0.0, endCenter: center, endRadius: radius, options: .drawsAfterEndLocation)
         
         
         

@@ -10,7 +10,7 @@ import UIKit
 
 class ViewController: UIViewController, UITextFieldDelegate {
     
-    //MARK: Outlets
+    //MARK: Properties
     var enteredNumber = UITextField()
     var segmentedControl = UISegmentedControl()
     var titleLabel = UILabel()
@@ -20,22 +20,33 @@ class ViewController: UIViewController, UITextFieldDelegate {
     var rightUnitsLabel = UILabel()
     var topStackView = UIStackView()
     
-    
-    let backgroundColor = UIColor(red: 14.0/255, green: 54/255, blue: 80/255, alpha: 1.0)
-    
+    //MARK: Colors
+    let backgroundColor = UIColor(red: 14/255, green: 54/255, blue: 80/255, alpha: 1.0)
     let enteredNumberColor = UIColor(red: 151/255, green: 151/255, blue: 151/255, alpha: 1.0)
-    
-    let gradientPoint = CGPoint(x: 100.0, y: 100.0)
-    
+    let segmentSelectedColor = UIColor(red: 84/255, green: 106/255, blue: 127/255, alpha: 1)
     
     
+    
+    let centerRadiantColor = UIColor(red: 36/255, green: 90/255, blue: 117/255, alpha: 1.0)
     override func viewDidLoad() {
         super.viewDidLoad()
         enteredNumber.delegate = self
-        let gradient = RadialGradientLayer(innerColor: UIColor.red, outerColor: UIColor.cyan)
+        enteredNumber.becomeFirstResponder()
         
-        self.view.layer.addSublayer(gradient)
-        self.view.backgroundColor = backgroundColor
+        
+        
+        let center = CGPoint(x: view.bounds.width / 2.0, y: view.bounds.height/4)
+        
+        
+        let gradient = RadialGradientLayer(center: center, radius: self.view.bounds.width/2, colors: [centerRadiantColor.cgColor, backgroundColor.cgColor])
+        
+        
+        gradient.frame = self.view.bounds
+        self.view.layer.insertSublayer(gradient, at: 1)
+        gradient.setNeedsDisplay()
+        
+        
+        
         setupTextField()
         setupLabels()
         setupSegmentedControl()
@@ -46,11 +57,16 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
     }
     
+    
+    
+    // MARK: Helper functions to setup View
+    
     func setupLabels() {
         leftUnitsLabel.translatesAutoresizingMaskIntoConstraints = false
         leftNumberLabel.translatesAutoresizingMaskIntoConstraints = false
         rightNumberLabel.translatesAutoresizingMaskIntoConstraints = false
         rightUnitsLabel.translatesAutoresizingMaskIntoConstraints = false
+        
         titleLabel.text = "A/C Efficiency"
         titleLabel.textColor = UIColor.white
         titleLabel.textAlignment = .center
@@ -80,9 +96,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
         rightNumberLabel.font = numbersFont
         rightNumberLabel.textAlignment = .center
 
-        
-        
-        
         view.addSubview(leftNumberLabel)
         view.addSubview(leftUnitsLabel)
         view.addSubview(rightUnitsLabel)
@@ -90,7 +103,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     func setupTextField() {
-        
         enteredNumber.attributedPlaceholder = NSAttributedString(string: "Enter Here", attributes: [NSForegroundColorAttributeName: enteredNumberColor, NSFontAttributeName: UIFont(name: "PaulGrotesk-Regular-Trail", size: 20 )!])
         enteredNumber.textColor = enteredNumberColor
         enteredNumber.borderStyle = .roundedRect
@@ -98,7 +110,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
         enteredNumber.layer.borderWidth = 2.0
         enteredNumber.backgroundColor = backgroundColor
         enteredNumber.textAlignment = .center
-        //self.view.addSubview(enteredNumber)
     }
     
     func setupSegmentedControl() {
@@ -107,10 +118,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
         segmentedControl.insertSegment(withTitle: "EER", at: 1, animated: true)
         segmentedControl.insertSegment(withTitle: "COP", at: 2, animated: true)
         segmentedControl.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: segmentTitleFont!], for: .normal)
-        //segmentedControl.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: .selected)
-        segmentedControl.tintColor = UIColor.white
-        //self.view.addSubview(segmentedControl)
-        
+        segmentedControl.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: segmentTitleFont!], for: .selected)
+        segmentedControl.tintColor = segmentSelectedColor
         segmentedControl.addTarget(self, action: #selector(segmentTapped), for: .valueChanged)
     }
     
@@ -126,56 +135,43 @@ class ViewController: UIViewController, UITextFieldDelegate {
         self.view.addSubview(topStackView)
         }
     
+    //MARK: Constraints Setup
     func setupConstraints() {
-        let textFieldToLabel = NSLayoutConstraint(item: enteredNumber, attribute: .width, relatedBy: .equal, toItem: titleLabel, attribute: .width, multiplier: 1, constant: 0)
+        // StackView Constaints
         let stackviewTop = NSLayoutConstraint(item: topStackView, attribute: .top, relatedBy: .equal, toItem: self.view, attribute: .top, multiplier: 1, constant: 100)
         let stackviewLeading = NSLayoutConstraint(item: topStackView, attribute: .leading, relatedBy: .equal, toItem: self.view, attribute: .leading, multiplier: 1, constant: 10)
         let stackviewTrailing = NSLayoutConstraint(item: topStackView, attribute: .trailing, relatedBy: .equal, toItem: self.view, attribute: .trailing, multiplier: 1, constant: -10)
         let stackviewHeight = NSLayoutConstraint(item: topStackView, attribute: .height, relatedBy: .equal, toItem: self.view, attribute: .height , multiplier: 0, constant: 125)
+        let enteredNumberHeight = NSLayoutConstraint(item: enteredNumber, attribute: .height, relatedBy: .equal, toItem: self.view, attribute: .height, multiplier: 0, constant: 40)
         
         // Left Number and Units
-        let leftNumbertoStack = NSLayoutConstraint(item: leftNumberLabel, attribute: .top, relatedBy: .equal, toItem: topStackView, attribute: .bottom, multiplier: 1, constant: 60)
+        let leftNumbertoStack = NSLayoutConstraint(item: leftNumberLabel, attribute: .top, relatedBy: .equal, toItem: topStackView, attribute: .bottom, multiplier: 1, constant: 50)
         let leftNumberToViewLeading = NSLayoutConstraint(item: leftNumberLabel, attribute: .leading, relatedBy: .equal, toItem: self.view, attribute: .leading, multiplier: 1, constant: 50)
-        
         let leftNumberHeight = NSLayoutConstraint(item: leftNumberLabel, attribute: .height, relatedBy: .equal, toItem: self.view, attribute: .height, multiplier: 0, constant: 45)
-        
-        let leftNumberWidth = NSLayoutConstraint(item: leftNumberLabel, attribute: .width, relatedBy: .greaterThanOrEqual, toItem: self.view, attribute: .height, multiplier: 0, constant: 80)
-        
-        let leftUnitsWidth = NSLayoutConstraint(item: leftUnitsLabel, attribute: .width, relatedBy: .greaterThanOrEqual, toItem: self.view, attribute: .width, multiplier: 0, constant: 80)
-        
+        let leftNumberWidth = NSLayoutConstraint(item: leftNumberLabel, attribute: .width, relatedBy: .equal, toItem: self.view, attribute: .height, multiplier: 0, constant: 100)
+        let leftUnitsWidth = NSLayoutConstraint(item: leftUnitsLabel, attribute: .width, relatedBy: .equal, toItem: self.view, attribute: .width, multiplier: 0, constant: 100)
         let leftUnitsHeight = NSLayoutConstraint(item: leftUnitsLabel, attribute: .height, relatedBy: .equal, toItem: self.view, attribute: .height, multiplier: 0, constant: 30)
-        
         let leftUnitsToNumber = NSLayoutConstraint(item: leftUnitsLabel, attribute: .top, relatedBy: .equal, toItem: leftNumberLabel, attribute: .bottom, multiplier: 1, constant: 0)
-        
         let leftUnitstoViewLeading = NSLayoutConstraint(item: leftUnitsLabel, attribute: .leading, relatedBy: .equal, toItem: self.view, attribute: .leading, multiplier: 1, constant: 50)
         
+        // Right Number and Units
         let rightNumbertoViewTrailing = NSLayoutConstraint(item: rightNumberLabel, attribute: .trailing, relatedBy: .equal, toItem: self.view, attribute: .trailing, multiplier: 1, constant: -50)
-        
-        let rightNumbertoStack = NSLayoutConstraint(item: rightNumberLabel, attribute: .top, relatedBy: .equal, toItem: topStackView, attribute: .bottom, multiplier: 1, constant: 60)
-        
+        let rightNumbertoStack = NSLayoutConstraint(item: rightNumberLabel, attribute: .top, relatedBy: .equal, toItem: topStackView, attribute: .bottom, multiplier: 1, constant: 50)
         let rightNumberHeight = NSLayoutConstraint(item: rightNumberLabel, attribute: .height, relatedBy: .equal, toItem: self.view, attribute: .height, multiplier: 0, constant: 45)
-        
-        let rightNumberWidth = NSLayoutConstraint(item: rightNumberLabel, attribute: .width, relatedBy: .greaterThanOrEqual, toItem: self.view, attribute: .height, multiplier: 0, constant: 80)
-        
+        let rightNumberWidth = NSLayoutConstraint(item: rightNumberLabel, attribute: .width, relatedBy: .equal, toItem: self.view, attribute: .height, multiplier: 0, constant: 100)
         let rightUnitsToNumber = NSLayoutConstraint(item: rightUnitsLabel, attribute: .top, relatedBy: .equal, toItem: rightNumberLabel, attribute: .bottom, multiplier: 1, constant: 0)
-        
         let rightUnitstoViewLeading = NSLayoutConstraint(item: rightUnitsLabel, attribute: .trailing, relatedBy: .equal, toItem: self.view, attribute: .trailing, multiplier: 1, constant: -50)
-        
-        let rightUnitsWidth = NSLayoutConstraint(item: rightUnitsLabel, attribute: .width, relatedBy: .greaterThanOrEqual, toItem: self.view, attribute: .width, multiplier: 0, constant: 80)
-        
+        let rightUnitsWidth = NSLayoutConstraint(item: rightUnitsLabel, attribute: .width, relatedBy: .equal, toItem: self.view, attribute: .width, multiplier: 0, constant: 100)
         let rightUnitsHeight = NSLayoutConstraint(item: rightUnitsLabel, attribute: .height, relatedBy: .equal, toItem: self.view, attribute: .height, multiplier: 0, constant: 30)
-        
         let segmentedControlWidth = NSLayoutConstraint(item: segmentedControl, attribute: .width, relatedBy: .equal, toItem: topStackView, attribute: .width, multiplier: 1, constant: 0)
         
-    
-        
-        view.addConstraints([stackviewTop, stackviewLeading, stackviewTrailing, textFieldToLabel, stackviewHeight, leftNumbertoStack, leftNumberToViewLeading, leftNumberHeight, leftNumberWidth, leftUnitsToNumber, leftUnitstoViewLeading, segmentedControlWidth, rightNumbertoViewTrailing, rightNumbertoStack, rightNumberHeight, rightNumberWidth, rightUnitsToNumber, rightUnitstoViewLeading, rightUnitsWidth, rightUnitsHeight, leftUnitsWidth, leftUnitsHeight])
+        view.addConstraints([stackviewTop, stackviewLeading, stackviewTrailing, stackviewHeight, leftNumbertoStack, leftNumberToViewLeading, leftNumberHeight, leftNumberWidth, leftUnitsToNumber, leftUnitstoViewLeading, segmentedControlWidth, rightNumbertoViewTrailing, rightNumbertoStack, rightNumberHeight, rightNumberWidth, rightUnitsToNumber, rightUnitstoViewLeading, rightUnitsWidth, rightUnitsHeight, leftUnitsWidth, leftUnitsHeight, enteredNumberHeight])
     }
     
+    //MARK: Actions
     func segmentTapped() {
         guard let text = enteredNumber.text else { return }
         let number = Float(text) ?? 0.0
-        
         switch segmentedControl.selectedSegmentIndex {
         case 0:
             let kwTonEff = KwPerTon(kwPerTon: number)
@@ -195,35 +191,22 @@ class ViewController: UIViewController, UITextFieldDelegate {
             rightUnitsLabel.text = "kW/Ton"
             leftNumberLabel.text = number == 0.0 ? " " : String(copEff.eer.roundTo(places: 2))
             leftUnitsLabel.text = "EER"
-            
         default:
             print("not right")
-            
         }
-        
     }
     
-    
+    //MARK: Text Field Delegate
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
-        
-        
         let currentText = textField.text!.characters.count < 1 ? "0" : textField.text ?? "0"
-        
-        
-        
+       // if currentText.characters.count > 4 {
+          //  return false
+        //}
         let startIndex =  string == "" ? currentText.index(before: currentText.endIndex) : currentText.index(currentText.startIndex, offsetBy: currentText.characters.count)
-        
         let endIndex = currentText.endIndex
-        
-        
         let myRange = startIndex..<endIndex
-        
         let prospectiveText = currentText.replacingCharacters(in: myRange, with: string)
         let number = Float(prospectiveText) ?? 0.0
-        
- 
-        
         
         switch segmentedControl.selectedSegmentIndex {
         case 0:
@@ -244,28 +227,10 @@ class ViewController: UIViewController, UITextFieldDelegate {
             rightUnitsLabel.text = "kW/Ton"
             leftNumberLabel.text = number == 0.0 ? " " : String(copEff.eer.roundTo(places: 2))
             leftUnitsLabel.text = "EER"
-            
         default:
             print("not right")
-            
         }
         return true
-        
-        
-        
-        
     }
-    
-    
-    //TODO: Add tap gesture to resign first responder
-    
-    
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        resignFirstResponder()
-        return true
-    }
-    
-    
 }
 
