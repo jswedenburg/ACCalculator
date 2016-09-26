@@ -24,43 +24,28 @@ class ViewController: UIViewController, UITextFieldDelegate {
     let backgroundColor = UIColor(red: 14/255, green: 54/255, blue: 80/255, alpha: 1.0)
     let enteredNumberColor = UIColor(red: 151/255, green: 151/255, blue: 151/255, alpha: 1.0)
     let segmentSelectedColor = UIColor(red: 84/255, green: 106/255, blue: 127/255, alpha: 1)
-    
-    
-    
     let centerRadiantColor = UIColor(red: 36/255, green: 90/255, blue: 117/255, alpha: 1.0)
+    
+    //MARK: View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         enteredNumber.delegate = self
         enteredNumber.becomeFirstResponder()
-        
-        
-        
+        self.enteredNumber.keyboardType = UIKeyboardType.decimalPad
         let center = CGPoint(x: view.bounds.width / 2.0, y: view.bounds.height/4)
-        
-        
         let gradient = RadialGradientLayer(center: center, radius: self.view.bounds.width/2, colors: [centerRadiantColor.cgColor, backgroundColor.cgColor])
-        
-        
         gradient.frame = self.view.bounds
         self.view.layer.insertSublayer(gradient, at: 1)
         gradient.setNeedsDisplay()
-        
-        
         
         setupTextField()
         setupLabels()
         setupSegmentedControl()
         setupStackView()
-        
         setupConstraints()
-        self.enteredNumber.keyboardType = UIKeyboardType.decimalPad
-        
     }
     
-    
-    
     // MARK: Helper functions to setup View
-    
     func setupLabels() {
         leftUnitsLabel.translatesAutoresizingMaskIntoConstraints = false
         leftNumberLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -78,7 +63,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
         leftUnitsLabel.textColor = UIColor.white
         leftUnitsLabel.font = unitsFont
         leftUnitsLabel.textAlignment = .center
-        
         
         leftNumberLabel.text = " "
         leftNumberLabel.textColor = UIColor.white
@@ -199,9 +183,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
     //MARK: Text Field Delegate
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let currentText = textField.text!.characters.count < 1 ? "0" : textField.text ?? "0"
-       // if currentText.characters.count > 4 {
-          //  return false
-        //}
         let startIndex =  string == "" ? currentText.index(before: currentText.endIndex) : currentText.index(currentText.startIndex, offsetBy: currentText.characters.count)
         let endIndex = currentText.endIndex
         let myRange = startIndex..<endIndex
@@ -228,7 +209,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             leftNumberLabel.text = number == 0.0 ? " " : String(copEff.eer.roundTo(places: 2))
             leftUnitsLabel.text = "EER"
         default:
-            print("not right")
+            print("No third case")
         }
         return true
     }

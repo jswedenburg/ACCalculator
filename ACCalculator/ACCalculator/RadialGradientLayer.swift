@@ -20,7 +20,6 @@ class RadialGradientLayer: CALayer {
         self.center = center
         self.radius = radius
         self.colors = colors
-        
         super.init()    }
     
     required init(coder aDecoder: NSCoder) {
@@ -31,29 +30,12 @@ class RadialGradientLayer: CALayer {
     var radius:CGFloat = 20
     var colors:[CGColor] = [UIColor(red: 251/255, green: 237/255, blue: 33/255, alpha: 1.0).cgColor , UIColor(red: 251/255, green: 179/255, blue: 108/255, alpha: 1.0).cgColor]
     
-    
     override func draw(in ctx: CGContext) {
         ctx.saveGState()
-        
         let colorSpace = CGColorSpaceCreateDeviceRGB()
-        
         let locations: [CGFloat] = [0.0, 1.0]
-        
-        
-        
-        
-        
-
-        
-       let gradient = CGGradient(colorsSpace: colorSpace, colors: colors as CFArray, locations: locations)
-        
-        
-        
-        
+        let gradient = CGGradient(colorsSpace: colorSpace, colors: colors as CFArray, locations: locations)
         ctx.drawRadialGradient(gradient!, startCenter: center, startRadius: 0.0, endCenter: center, endRadius: radius, options: .drawsAfterEndLocation)
-        
-        
-        
-        }
+    }
 }
 
