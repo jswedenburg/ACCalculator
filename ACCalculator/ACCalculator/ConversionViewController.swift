@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITextFieldDelegate {
+class ConversionViewController: UIViewController, UITextFieldDelegate {
     
     //MARK: Properties
     var enteredNumber = UITextField()
